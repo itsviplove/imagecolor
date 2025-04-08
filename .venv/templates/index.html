@@ -1,17 +1,69 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Image Color Extractor</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Palette Extractor</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Image Color Extractor</h1>
-        <form method="post" enctype="multipart/form-data">
-            <input type="file" name="file" accept="image/*" required>
-            <button type="submit">Upload</button>
-        </form>
-        <p>Upload an image to extract top 10 colors</p>
+    <div class="hero">
+        <div class="container">
+            <div class="header">
+                <h1>Image Color Analyzer</h1>
+                <p class="subtitle">Upload an image to discover its dominant colors</p>
+            </div>
+
+            <div class="upload-card">
+                <form method="POST" enctype="multipart/form-data" class="upload-form">
+                    <div class="upload-box" id="dropZone">
+                        <i class="fas fa-cloud-upload-alt icon"></i>
+                        <input type="file" name="file" id="fileInput" accept="image/*" hidden>
+                        <label for="fileInput" class="upload-label">
+                            <span class="browse-text">Choose File</span>
+                        </label>
+                        <p class="drag-text">or drag and drop here</p>
+                        <div class="supported-files">Supported formats: JPEG, PNG, GIF</div>
+                    </div>
+                    <button type="submit" class="analyze-btn">
+                        <i class="fas fa-magic"></i>
+                        Extract Colors
+                    </button>
+                </form>
+
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
+        </div>
     </div>
+
+    <script>
+        // Drag and drop functionality
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('dragover');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            fileInput.files = e.dataTransfer.files;
+        });
+    </script>
 </body>
 </html>

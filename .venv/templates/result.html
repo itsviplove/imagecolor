@@ -1,20 +1,50 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Results</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Results</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Top 10 Colors</h1>
-        <div class="color-grid">
-            {% for color in colors %}
-            <div class="color-box" style="background-color: {{ color }}">
-                <span>{{ color }}</span>
+    <div class="hero result-page">
+        <div class="container">
+            <h2 class="result-title">Dominant Colors Found</h2>
+
+            <div class="color-palette">
+                {% for color in colors %}
+                <div class="color-card" style="background-color: {{ color }};">
+                    <div class="color-info">
+                        <span class="hex-code">{{ color }}</span>
+                        <button class="copy-btn" data-clipboard-text="{{ color }}">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+                {% endfor %}
             </div>
-            {% endfor %}
+
+            <a href="/" class="try-again">
+                <i class="fas fa-undo"></i>
+                Analyze Another Image
+            </a>
         </div>
-        <a href="/">Try another image</a>
     </div>
+
+    <script>
+        // Clipboard copy functionality
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const text = e.currentTarget.getAttribute('data-clipboard-text');
+                navigator.clipboard.writeText(text).then(() => {
+                    e.currentTarget.innerHTML = '<i class="fas fa-check"></i>';
+                    setTimeout(() => {
+                        e.currentTarget.innerHTML = '<i class="far fa-copy"></i>';
+                    }, 2000);
+                });
+            });
+        });
+    </script>
 </body>
 </html>
