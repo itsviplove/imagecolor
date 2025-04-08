@@ -1,10 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-
+    <div class="container">
+        <h1>Top 10 Colors</h1>
+        <div class="color-grid">
+            {% for color in colors %}
+            <div class="color-box" style="background-color: {{ color }}">
+                <span>{{ color }}</span>
+            </div>
+            {% endfor %}
+        </div>
+        <a href="/">Try another image</a>
+    </div>
 </body>
 </html>
